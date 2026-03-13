@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Departure x zaimler / Proposal R1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,400&family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-bg: #F2F2F2;
+    --color-fg: #1A1A1A;
+    --color-accent: #535BFA;
+    --color-accent-light: #535BFA12;
+    --color-muted: #86868A;
+    --color-rule: #D0D0D0;
+    --color-surface: #E8E8E8;
+    --color-white: #FFFFFF;
+    --color-dark: #1A1A1A;
+    --color-dark-muted: #3A3A3A;
+
+    --font-sans: 'Inter Tight', -apple-system, sans-serif;
+    --font-mono: 'DM Mono', 'SF Mono', monospace;
+
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 3rem;
+    --space-xl: 5rem;
+    --space-2xl: 8rem;
+
+    --max-width: 1200px;
+    --gutter: clamp(1.5rem, 5vw, 4rem);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-fg);
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  /* ------------------------------------------------
+     UTILITY
+  ------------------------------------------------ */
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .section-number {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--color-accent);
+    letter-spacing: 0.05em;
+  }
+
+  .rule {
+    border: none;
+    border-top: 1px solid var(--color-rule);
+    margin: 0;
+  }
+
+  .rule--accent {
+    border-top-color: var(--color-accent);
+  }
+
+  /* ------------------------------------------------
+     HEADER / COVER
+  ------------------------------------------------ */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .cover__topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: var(--space-md) var(--gutter);
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .cover__logo {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-fg);
+  }
+
+  .logo-mark {
+    display: block;
+    color: var(--color-fg);
+  }
+
+  .logo-mark--white {
+    color: var(--color-white);
+  }
+
+  .cover__meta-top {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    line-height: 1.8;
+  }
+
+  .cover__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 var(--gutter);
+    padding-bottom: 0;
+  }
+
+  .cover__client {
+    font-family: var(--font-sans);
+    font-size: clamp(4rem, 12vw, 10rem);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    color: var(--color-fg);
+    margin-bottom: var(--space-lg);
+  }
+
+  .cover__client span {
+    color: var(--color-accent);
+  }
+
+  .cover__subtitle {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 300;
+    color: var(--color-muted);
+    max-width: 500px;
+    margin-bottom: var(--space-xl);
+    line-height: 1.5;
+  }
+
+  .cover__footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--gutter);
+    border-top: 1px solid var(--color-rule);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    line-height: 1.8;
+  }
+
+  .cover__footer strong {
+    color: var(--color-fg);
+    font-weight: 500;
+    display: block;
+  }
+
+  /* ------------------------------------------------
+     SECTION FRAMEWORK
+  ------------------------------------------------ */
+  .section {
+    padding: var(--space-2xl) 0;
+  }
+
+  .section--dark {
+    background: var(--color-dark);
+    color: var(--color-white);
+  }
+
+  .section--dark .section-label {
+    color: rgba(255,255,255,0.4);
+  }
+
+  .section--dark .rule {
+    border-top-color: rgba(255,255,255,0.12);
+  }
+
+  .section--dark .color-muted {
+    color: rgba(255,255,255,0.5);
+  }
+
+  .section--accent-bg {
+    background: var(--color-accent);
+    color: var(--color-white);
+  }
+
+  .section--accent-bg .section-label {
+    color: rgba(255,255,255,0.6);
+  }
+
+  .section__header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-md);
+    align-items: baseline;
+    margin-bottom: var(--space-lg);
+  }
+
+  .section__title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    max-width: 700px;
+  }
+
+  .section__title strong {
+    font-weight: inherit;
+  }
+
+  /* ------------------------------------------------
+     WHAT IF / OPENING STATEMENT
+  ------------------------------------------------ */
+  .opening {
+    padding: var(--space-2xl) 0;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .opening__question {
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+    font-weight: 300;
+    line-height: 1.35;
+    max-width: 800px;
+    font-style: italic;
+    color: var(--color-fg);
+    margin-bottom: var(--space-xl);
+  }
+
+  .opening__question em {
+    color: var(--color-accent);
+    font-style: italic;
+  }
+
+  .opening__body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+  }
+
+  .opening__body p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-dark-muted);
+    max-width: 520px;
+  }
+
+  /* ------------------------------------------------
+     TWO-COLUMN CHALLENGE/OPPORTUNITY
+  ------------------------------------------------ */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--color-rule);
+    margin-top: var(--space-lg);
+  }
+
+  .section--dark .two-col {
+    background: rgba(255,255,255,0.08);
+  }
+
+  .two-col__item {
+    background: var(--color-bg);
+    padding: var(--space-lg);
+  }
+
+  .section--dark .two-col__item {
+    background: var(--color-dark);
+  }
+
+  .two-col__label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-md);
+  }
+
+  .two-col__label--challenge { color: var(--color-muted); }
+  .two-col__label--opportunity { color: var(--color-accent); }
+
+  .two-col__text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-dark-muted);
+  }
+
+  .section--dark .two-col__text {
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* ------------------------------------------------
+     DESIGN POINT OF VIEW
+  ------------------------------------------------ */
+  .pov-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+    margin-top: var(--space-lg);
+  }
+
+  .pov-card {
+    background: var(--color-dark);
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .pov-card__title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: var(--space-sm);
+    line-height: 1.3;
+  }
+
+  .pov-card__text {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* ------------------------------------------------
+     PHASES / TIMELINE
+  ------------------------------------------------ */
+  .phase {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: var(--space-lg);
+    padding: var(--space-lg) 0;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .phase:last-child {
+    border-bottom: none;
+  }
+
+  .phase__marker {
+    position: relative;
+  }
+
+  .phase__number {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--color-accent);
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-xs);
+  }
+
+  .phase__weeks {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .phase__title {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: var(--space-sm);
+    line-height: 1.3;
+  }
+
+  .phase__desc {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-dark-muted);
+    margin-bottom: var(--space-md);
+    max-width: 580px;
+  }
+
+  .phase__deliverables {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+  }
+
+  .phase__deliverables li {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    padding: 0.4rem 0.8rem;
+    background: var(--color-surface);
+    border-radius: 2px;
+    color: var(--color-fg);
+  }
+
+  /* ------------------------------------------------
+     INVESTMENT
+  ------------------------------------------------ */
+  .investment-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-rule);
+    padding: var(--space-lg);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    margin-top: var(--space-lg);
+  }
+
+  .investment-card__title {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: var(--space-xs);
+  }
+
+  .investment-card__scope {
+    font-size: 0.95rem;
+    color: var(--color-dark-muted);
+    line-height: 1.6;
+    max-width: 560px;
+  }
+
+  .investment-card__amount {
+    font-family: var(--font-sans);
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--color-fg);
+    padding-top: var(--space-md);
+    border-top: 2px solid var(--color-accent);
+    white-space: nowrap;
+    line-height: 1.2;
+  }
+
+  .investment-card__amount span {
+    display: block;
+    margin-top: var(--space-xs);
+  }
+
+  /* ------------------------------------------------
+     QUESTIONS
+  ------------------------------------------------ */
+  .questions-list {
+    list-style: none;
+    counter-reset: q;
+  }
+
+  .questions-list li {
+    counter-increment: q;
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--color-rule);
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: var(--space-sm);
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--color-dark-muted);
+  }
+
+  .questions-list li::before {
+    content: counter(q, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-accent);
+    padding-top: 0.3rem;
+  }
+
+  /* ------------------------------------------------
+     CLOSING / CTA
+  ------------------------------------------------ */
+  .closing {
+    text-align: left;
+  }
+
+  .closing__headline {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-lg);
+    max-width: 700px;
+    color: var(--color-white);
+  }
+
+  .closing__body {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    max-width: 560px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: var(--space-xl);
+  }
+
+  .closing__footer {
+    display: flex;
+    gap: var(--space-xl);
+    align-items: flex-end;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.4);
+    padding-top: var(--space-lg);
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .closing__footer a {
+    color: var(--color-white);
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+  .closing__logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* ------------------------------------------------
+     PULLQUOTE
+  ------------------------------------------------ */
+  .pullquote {
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 300;
+    line-height: 1.45;
+    color: var(--color-fg);
+    max-width: 680px;
+    padding: var(--space-xl) 0;
+    border-top: 3px solid var(--color-accent);
+  }
+
+  .section--dark .pullquote {
+    color: var(--color-white);
+    border-top-color: var(--color-accent);
+  }
+
+  /* ------------------------------------------------
+     HOW WE WORK
+  ------------------------------------------------ */
+  .how-text {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    margin-top: var(--space-lg);
+  }
+
+  .how-text p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-dark-muted);
+  }
+
+  /* ------------------------------------------------
+     ACCENT BAR (decorative)
+  ------------------------------------------------ */
+  .accent-bar {
+    width: 100%;
+    height: 4px;
+    background: var(--color-accent);
+  }
+
+  /* ------------------------------------------------
+     SIDE NAV
+  ------------------------------------------------ */
+  :root {
+    --nav-width: 210px;
+  }
+
+  .side-nav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--nav-width);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 1.5rem 0 2rem;
+    gap: 0.15rem;
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.45s ease;
+    background: var(--color-bg);
+    border-right: 1px solid var(--color-rule);
+  }
+
+  .side-nav.visible {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  /* Main content wrapper handles the push */
+  .main-content {
+    transition: padding-left 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    padding-left: 0;
+  }
+
+  body.nav-active .main-content {
+    padding-left: var(--nav-width);
+  }
+
+  .side-nav__item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+    padding: 0.5rem 0 0.5rem 0.75rem;
+    position: relative;
+    transition: color 0.25s ease;
+  }
+
+  .side-nav__item:hover .side-nav__label {
+    color: var(--color-accent);
+  }
+
+  .side-nav__item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-accent);
+    pointer-events: none;
+  }
+
+  .side-nav__item.active .side-nav__label {
+    color: var(--color-accent);
+  }
+
+  .side-nav__number {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--color-muted);
+    width: 1.4rem;
+    text-align: right;
+    flex-shrink: 0;
+    transition: color 0.25s ease;
+  }
+
+  .side-nav__item.active .side-nav__number {
+    color: var(--color-accent);
+  }
+
+  .side-nav__label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--color-fg);
+    white-space: nowrap;
+    transition: color 0.25s ease;
+  }
+
+  /* ------------------------------------------------
+     PLACEHOLDER IMAGES
+  ------------------------------------------------ */
+  .image-block {
+    padding: var(--space-lg) var(--gutter);
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .image-block--full {
+    max-width: none;
+    padding: var(--space-lg) 0;
+  }
+
+  .image-block--bleed {
+    max-width: none;
+    padding: var(--space-lg) var(--gutter);
+  }
+
+  .placeholder {
+    background: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom right, transparent calc(50% - 0.5px), var(--color-rule) calc(50% - 0.5px), var(--color-rule) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+      linear-gradient(to top right, transparent calc(50% - 0.5px), var(--color-rule) calc(50% - 0.5px), var(--color-rule) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+    opacity: 0.4;
+  }
+
+  .placeholder__label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    background: var(--color-bg);
+    padding: 0.5rem 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .image-row {
+    display: grid;
+    gap: 1px;
+    background: var(--color-rule);
+  }
+
+  .image-row--2 { grid-template-columns: 1fr 1fr; }
+  .image-row--3 { grid-template-columns: 1fr 1fr 1fr; }
+  .image-row--2-1 { grid-template-columns: 2fr 1fr; }
+  .image-row--1-2 { grid-template-columns: 1fr 2fr; }
+
+  .section--dark .placeholder {
+    background: #242424;
+    border-color: #333;
+  }
+
+  .section--dark .placeholder::before {
+    background:
+      linear-gradient(to bottom right, transparent calc(50% - 0.5px), #333 calc(50% - 0.5px), #333 calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+      linear-gradient(to top right, transparent calc(50% - 0.5px), #333 calc(50% - 0.5px), #333 calc(50% + 0.5px), transparent calc(50% + 0.5px));
+  }
+
+  .section--dark .placeholder__label {
+    background: var(--color-dark);
+    color: rgba(255,255,255,0.35);
+  }
+
+  .section--dark .image-row {
+    background: #333;
+  }
+
+  @media (max-width: 768px) {
+    .image-row--2,
+    .image-row--3,
+    .image-row--2-1,
+    .image-row--1-2 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ------------------------------------------------
+     PHASE ILLUSTRATIONS
+  ------------------------------------------------ */
+  .phase-illustrations {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--color-rule);
+  }
+
+  .phase-illustration-cell {
+    background: var(--color-bg);
+    padding: var(--space-lg) var(--space-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .phase-illustration {
+    width: 100%;
+    max-width: 240px;
+    height: auto;
+    opacity: 0.9;
+  }
+
+  .phase-illustration__label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .phase-illustrations {
+      grid-template-columns: repeat(3, 70vw);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      gap: 0;
+      background: none;
+    }
+
+    .phase-illustration-cell {
+      scroll-snap-align: center;
+      padding: var(--space-md);
+      border-right: 1px solid var(--color-rule);
+    }
+
+    .phase-illustration-cell:last-child {
+      border-right: none;
+    }
+
+    .phase-illustration {
+      max-width: 180px;
+    }
+  }
+
+  /* ------------------------------------------------
+     SCROLL ANIMATION
+  ------------------------------------------------ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ------------------------------------------------
+     RESPONSIVE
+  ------------------------------------------------ */
+  @media (max-width: 768px) {
+    .side-nav {
+      display: none;
+    }
+
+    body.nav-active .main-content {
+      padding-left: 0;
+    }
+
+    .cover__footer {
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+    }
+
+    .opening__body {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+
+    .two-col {
+      grid-template-columns: 1fr;
+    }
+
+    .pov-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .phase {
+      grid-template-columns: 1fr;
+      gap: var(--space-md);
+    }
+
+    .investment-card {
+      grid-template-columns: 1fr;
+    }
+
+    .how-text {
+      grid-template-columns: 1fr;
+    }
+
+    .closing__footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-sm);
+    }
+
+    .phase-illustrations {
+      gap: var(--space-lg);
+      background: none;
+    }
+
+    .phase-illustration {
+      max-width: 160px;
+    }
+  }
+
+  /* ------------------------------------------------
+     LARGE SCREENS (1800px+)
+  ------------------------------------------------ */
+  @media (min-width: 1800px) {
+    html {
+      font-size: 18px;
+    }
+
+    :root {
+      --max-width: 1400px;
+    }
+
+    .phase-illustration {
+      max-width: 300px;
+    }
+  }
+
+  /* ------------------------------------------------
+     4K+ (2800px+)
+  ------------------------------------------------ */
+  @media (min-width: 2800px) {
+    html {
+      font-size: 24px;
+    }
+
+    :root {
+      --max-width: 1800px;
+      --nav-width: 260px;
+      --gutter: 5rem;
+    }
+
+    .cover__client {
+      font-size: 14rem;
+    }
+
+    .side-nav {
+      padding: 0 1.5rem 0 2rem;
+      overflow: visible;
+      font-size: 16px;
+    }
+
+    .side-nav__number {
+      font-size: 13px;
+      width: 1.5rem;
+    }
+
+    .side-nav__label {
+      font-size: 14px;
+    }
+
+    .side-nav__item.active::before {
+      width: 3px;
+    }
+
+    .side-nav__item {
+      gap: 0.5rem;
+      padding: 8px 0 8px 10px;
+    }
+
+    .logo-mark {
+      width: 52px;
+      height: 52px;
+    }
+
+    /* Illustrations: bigger but preserve original stroke weight */
+    .phase-illustration {
+      max-width: 400px;
+      opacity: 1;
+    }
+
+    .phase-illustration-cell {
+      padding: var(--space-xl) var(--space-lg);
+    }
+
+    /* Remove grid dividers at 4K, use spacing instead */
+    .phase-illustrations {
+      gap: 0;
+      background: none;
+    }
+
+    .cover__footer {
+      font-size: 0.8rem;
+    }
+
+    .section-label {
+      font-size: 0.8rem;
+    }
+
+    .section-number {
+      font-size: 0.8rem;
+    }
+
+    .pullquote {
+      font-size: clamp(1.5rem, 2vw, 2rem);
+      max-width: 800px;
+    }
+
+    .section__title {
+      max-width: 900px;
+    }
+
+    .closing__headline {
+      max-width: 900px;
+    }
+
+    .opening__question {
+      max-width: 1000px;
+    }
+
+    .image-row {
+      gap: 2px;
+    }
+  }
+
+  /* ------------------------------------------------
+     PRINT
+  ------------------------------------------------ */
+  @media print {
+    .section { break-inside: avoid; }
+    .cover { min-height: auto; page-break-after: always; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========================================
+     SIDE NAV
+======================================== -->
+<nav class="side-nav" id="sideNav">
+  <a href="#what-if" class="side-nav__item" data-section="what-if">
+    <span class="side-nav__number">01</span>
+    <span class="side-nav__label">What If</span>
+  </a>
+  <a href="#challenge" class="side-nav__item" data-section="challenge">
+    <span class="side-nav__number">02</span>
+    <span class="side-nav__label">Challenge</span>
+  </a>
+  <a href="#design-pov" class="side-nav__item" data-section="design-pov">
+    <span class="side-nav__number">03</span>
+    <span class="side-nav__label">Design POV</span>
+  </a>
+  <a href="#how" class="side-nav__item" data-section="how">
+    <span class="side-nav__number">04</span>
+    <span class="side-nav__label">How We Work</span>
+  </a>
+  <a href="#engagement" class="side-nav__item" data-section="engagement">
+    <span class="side-nav__number">05</span>
+    <span class="side-nav__label">Engagement</span>
+  </a>
+  <a href="#investment" class="side-nav__item" data-section="investment">
+    <span class="side-nav__number">06</span>
+    <span class="side-nav__label">Investment</span>
+  </a>
+  <a href="#questions" class="side-nav__item" data-section="questions">
+    <span class="side-nav__number">07</span>
+    <span class="side-nav__label">Questions</span>
+  </a>
+  <a href="#closing" class="side-nav__item" data-section="closing">
+    <span class="side-nav__number"></span>
+    <span class="side-nav__label">Next Steps</span>
+  </a>
+</nav>
+
+<main class="main-content" id="mainContent">
+
+<!-- ========================================
+     COVER
+======================================== -->
+<header class="cover">
+  <div class="cover__topbar">
+    <div class="cover__logo">
+      <svg class="logo-mark" width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4.8911 27.6641V5.90942H16.1623C23.8885 5.90942 28.7364 10.1513 28.7364 16.7867C28.7364 23.4222 23.8885 27.6641 16.1623 27.6641H4.8911ZM9.86013 23.3919H16.1623C20.8889 23.3919 23.6461 20.7862 23.6461 16.7867C23.6461 12.7873 20.8889 10.1816 16.132 10.1816H9.86013V23.3919Z" fill="currentColor"/>
+        <path d="M39.7251 5.90942H60.8132V10.2422H44.6941V14.4234H59.0861V18.6956H44.6941V23.3313H60.8132V27.6641H39.7251V5.90942Z" fill="currentColor"/>
+        <path d="M77.617 20.0893V27.6641H72.5571V5.90942H86.2522C91.3728 5.90942 94.7359 8.33334 94.7359 12.9994C94.7359 17.6351 91.3728 20.0893 86.2522 20.0893H77.617ZM77.617 15.8475H85.9795C88.3732 15.8475 89.7366 14.787 89.7366 12.9994C89.7366 11.2117 88.3732 10.1816 85.9795 10.1816H77.617V15.8475Z" fill="currentColor"/>
+        <path d="M13.799 39.2375H19.5255L30.3422 60.9922H24.8581L22.5554 56.3261H10.6176L8.31488 60.9922H2.92167L13.799 39.2375ZM16.6168 44.2066L12.6779 52.1449H20.5254L16.6168 44.2066Z" fill="currentColor"/>
+        <path d="M44.285 53.266V60.9922H39.2251V39.2375H53.0717C58.1316 39.2375 61.5251 41.6918 61.5251 46.2366C61.5251 49.5089 59.6769 51.7813 56.6167 52.7509L62.0402 60.9922H56.2531L51.3144 53.266H44.285ZM44.285 49.1453H52.799C55.1926 49.1453 56.5561 48.0848 56.5561 46.3275C56.5561 44.5399 55.1926 43.5097 52.799 43.5097H44.285V49.1453Z" fill="currentColor"/>
+        <path d="M95.2813 43.5703H85.8584V60.9922H80.7984V43.5703H71.3452V39.2375H95.2813V43.5703Z" fill="currentColor"/>
+        <path d="M16.2078 94.6556C8.63309 94.6556 4.87602 90.5955 4.87602 84.2933V72.5676H9.93594V83.8994C9.93594 87.7474 11.7236 90.2319 16.2078 90.2319C20.6921 90.2319 22.4494 87.7474 22.4494 83.8994V72.5676H27.5093V84.2933C27.5093 90.5955 23.7523 94.6556 16.2078 94.6556Z" fill="currentColor"/>
+        <path d="M44.285 86.596V94.3223H39.2251V72.5676H53.0717C58.1316 72.5676 61.5251 75.0218 61.5251 79.5667C61.5251 82.839 59.6769 85.1114 56.6167 86.081L62.0402 94.3223H56.2531L51.3144 86.596H44.285ZM44.285 82.4754H52.799C55.1926 82.4754 56.5561 81.4149 56.5561 79.6576C56.5561 77.8699 55.1926 76.8398 52.799 76.8398H44.285V82.4754Z" fill="currentColor"/>
+        <path d="M73.0571 72.5676H94.1452V76.9004H78.0261V81.0816H92.4181V85.3538H78.0261V89.9895H94.1452V94.3223H73.0571V72.5676Z" fill="currentColor"/>
+      </svg>
+    </div>
+    <div class="cover__meta-top">
+      Proposal R1<br>
+      March 2026
+    </div>
+  </div>
+
+  <div class="cover__body">
+    <h1 class="cover__client">zaimler<span>.</span></h1>
+    <p class="cover__subtitle">What happens when the world's first impression of zaimler is as inspired as the infrastructure behind it?</p>
+  </div>
+
+  <div class="cover__footer">
+    <div>
+      <strong>Prepared by</strong>
+      Ben Fogarty, Departure
+    </div>
+    <div>
+      <strong>Prepared for</strong>
+      zaimler
+    </div>
+    <div>
+      <strong>Document</strong>
+      Proposal R1 · March 2026
+    </div>
+  </div>
+</header>
+
+
+<!-- ========================================
+     WHAT IF
+======================================== -->
+<section id="what-if" class="section opening reveal">
+  <div class="container">
+  <div class="section__header">
+    <span class="section-number">01</span>
+    <span class="section-label">What If</span>
+  </div>
+
+  <p class="opening__question">
+    zaimler is building something most companies only talk about: the infrastructure that lets AI actually think across an enterprise. Knowledge graphs that give agents real understanding, not just retrieval. That is a <em>new capability</em>.
+  </p>
+
+  <div class="opening__body">
+    <p>
+      The product is technically serious. The team is technically serious. The customers are real. And Andreessen Horowitz noticed before the front door was ready. That kind of early conviction is rare. It also creates urgency.
+    </p>
+    <p>
+      Right now, when a CTO hears the name from a16z and searches, they land on a holding page. The curiosity is there. The place to land is not. That gap closes fast when the brand performs at the same level as the product.
+    </p>
+  </div>
+  </div>
+</section>
+
+
+
+<!-- ========================================
+     CHALLENGE & OPPORTUNITY
+======================================== -->
+<section id="challenge" class="section section--dark reveal">
+  <div class="container">
+    <div class="section__header">
+      <span class="section-number" style="color: var(--color-accent);">02</span>
+      <span class="section-label">Challenge &amp; Opportunity</span>
+    </div>
+
+    <h2 class="section__title" style="color: var(--color-white);">
+      The substance is all there.<br><strong>Now make it felt.</strong>
+    </h2>
+
+    <div class="two-col">
+      <div class="two-col__item">
+        <div class="two-col__label two-col__label--challenge">The Challenge</div>
+        <p class="two-col__text">
+          Enterprise CTOs and VPs of Engineering do their own research. They form impressions before the first sales conversation. When they search for zaimler today, they find a holding page. That signals two things to a technical buyer: not ready, and not serious. Neither is true. But first impressions are not corrected in demos. They have to be addressed before the demo gets scheduled.
+        </p>
+      </div>
+      <div class="two-col__item">
+        <div class="two-col__label two-col__label--opportunity">The Opportunity</div>
+        <p class="two-col__text">
+          zaimler has the product, the team, the customers, and the a16z mention. That combination is rare at seed stage. The opportunity is not to build a brand from nothing. It is to reveal what is already true about zaimler in a way that earns the next click. The best brands in infrastructure do not explain complexity. They make you feel the confidence of a system that was built with intention.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================================
+     DESIGN POINT OF VIEW
+======================================== -->
+<section id="design-pov" class="section reveal">
+  <div class="container">
+    <div class="section__header">
+      <span class="section-number">03</span>
+      <span class="section-label">Design Point of View</span>
+    </div>
+
+    <h2 class="section__title">
+      Design is not decoration.<br><strong>It is how a system earns trust.</strong>
+    </h2>
+
+    <div class="how-text" style="margin-top: var(--space-lg); margin-bottom: var(--space-xl);">
+      <p>
+        There is a particular kind of company where taste and vision are inseparable. Where every decision, from the data model to the API surface, carries a point of view. The brand has to come from that same place. Not layered on. Drawn out.
+      </p>
+      <p>
+        That is what this engagement is about. Not a vendor delivering assets. A shared belief that zaimler's brand should perform the way the product does: with precision, with depth, and with the kind of restraint that only comes from knowing exactly what you are building.
+      </p>
+    </div>
+
+    <div class="pullquote">
+      Imagine a CTO lands on zaimler for the first time and within thirty seconds starts thinking not about whether the product works, but about what they could build with it. That is what a great brand unlocks. Not credibility. Possibility.
+    </div>
+  </div>
+</section>
+
+<section class="section section--dark reveal">
+  <div class="container">
+    <p class="section-label" style="margin-bottom: var(--space-lg);">What zaimler's brand should feel like</p>
+    <div class="pov-grid">
+      <div class="pov-card">
+        <h3 class="pov-card__title">The confidence of restraint</h3>
+        <p class="pov-card__text">Structured type, generous space, restrained palette. The visual language of a system that was designed, not assembled.</p>
+      </div>
+      <div class="pov-card">
+        <h3 class="pov-card__title">Depth you can feel at a glance</h3>
+        <p class="pov-card__text">The brand should make complex infrastructure feel understandable to a sophisticated buyer without simplifying it into something false.</p>
+      </div>
+      <div class="pov-card">
+        <h3 class="pov-card__title">Something that holds</h3>
+        <p class="pov-card__text">Not a startup aesthetic. Not a utility. A system that will hold its coherence as the company grows, the product expands, and the audience widens.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- SVG Illustrations: Phase visual language -->
+<div class="image-block--bleed reveal">
+  <div class="phase-illustrations">
+    <div class="phase-illustration-cell">
+      <svg class="phase-illustration"   viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="343" cy="111" r="9" fill="#111111"/>
+<circle cx="366" cy="291" r="9" fill="#111111"/>
+<circle cx="387" cy="231" r="9" fill="#111111"/>
+<circle cx="490" cy="522" r="9" fill="#111111"/>
+<circle cx="409" cy="361" r="9" fill="#111111"/>
+<path d="M364.965 115L364.965 432.464C364.965 455.004 359.885 477.254 350.103 497.561L268.965 666" stroke="#111111" stroke-width="4" stroke-linecap="round"/>
+<path d="M386.965 115L386.965 466.518L386.965 663" stroke="#111111" stroke-width="4" stroke-linecap="round"/>
+<path d="M428.965 115L428.965 401.013C428.965 442.89 446.471 482.86 477.249 511.257L644.965 666" stroke="#111111" stroke-width="4" stroke-linecap="round"/>
+<path d="M407.965 115L407.965 432.464C407.965 455.004 413.045 477.254 422.827 497.561L503.965 666" stroke="#111111" stroke-width="4" stroke-linecap="round"/>
+<path d="M342.965 115L342.965 401.013C342.965 442.89 325.459 482.86 294.681 511.257L126.965 666" stroke="#111111" stroke-width="4" stroke-linecap="round"/>
+<g clip-path="url(#svg1_clip0_39_193)">
+<line x1="428.983" y1="336.586" x2="853.247" y2="760.85" stroke="#111111" stroke-width="4"/>
+<line x1="423.326" y1="342.243" x2="847.59" y2="766.507" stroke="#111111" stroke-width="4"/>
+<line x1="417.669" y1="347.9" x2="841.933" y2="772.164" stroke="#111111" stroke-width="4"/>
+<line x1="412.012" y1="353.556" x2="836.276" y2="777.82" stroke="#111111" stroke-width="4"/>
+<line x1="406.355" y1="359.213" x2="830.619" y2="783.477" stroke="#111111" stroke-width="4"/>
+<line x1="400.698" y1="364.87" x2="824.962" y2="789.134" stroke="#111111" stroke-width="4"/>
+<line x1="395.042" y1="370.527" x2="819.306" y2="794.791" stroke="#111111" stroke-width="4"/>
+<line x1="389.384" y1="376.184" x2="813.648" y2="800.448" stroke="#111111" stroke-width="4"/>
+<line x1="383.728" y1="381.841" x2="807.992" y2="806.105" stroke="#111111" stroke-width="4"/>
+<line x1="378.071" y1="387.497" x2="802.335" y2="811.761" stroke="#111111" stroke-width="4"/>
+<line x1="372.414" y1="393.154" x2="796.678" y2="817.418" stroke="#111111" stroke-width="4"/>
+<line x1="366.757" y1="398.811" x2="791.021" y2="823.075" stroke="#111111" stroke-width="4"/>
+<line x1="361.1" y1="404.468" x2="785.364" y2="828.732" stroke="#111111" stroke-width="4"/>
+<line x1="355.444" y1="410.125" x2="779.708" y2="834.389" stroke="#111111" stroke-width="4"/>
+<line x1="349.787" y1="415.782" x2="774.051" y2="840.046" stroke="#111111" stroke-width="4"/>
+<line x1="344.13" y1="421.439" x2="768.394" y2="845.703" stroke="#111111" stroke-width="4"/>
+<line x1="338.473" y1="427.096" x2="762.737" y2="851.36" stroke="#111111" stroke-width="4"/>
+<line x1="332.816" y1="432.752" x2="757.08" y2="857.016" stroke="#111111" stroke-width="4"/>
+<line x1="327.159" y1="438.409" x2="751.423" y2="862.673" stroke="#111111" stroke-width="4"/>
+<line x1="321.502" y1="444.066" x2="745.766" y2="868.33" stroke="#111111" stroke-width="4"/>
+<line x1="315.845" y1="449.723" x2="740.109" y2="873.987" stroke="#111111" stroke-width="4"/>
+<line x1="310.189" y1="455.38" x2="734.453" y2="879.644" stroke="#111111" stroke-width="4"/>
+<line x1="304.532" y1="461.036" x2="728.796" y2="885.301" stroke="#111111" stroke-width="4"/>
+<line x1="298.875" y1="466.693" x2="723.139" y2="890.957" stroke="#111111" stroke-width="4"/>
+<line x1="293.218" y1="472.35" x2="717.482" y2="896.615" stroke="#111111" stroke-width="4"/>
+<line x1="287.561" y1="478.007" x2="711.825" y2="902.271" stroke="#111111" stroke-width="4"/>
+<line x1="281.904" y1="483.664" x2="706.169" y2="907.928" stroke="#111111" stroke-width="4"/>
+<line x1="276.248" y1="489.321" x2="700.512" y2="913.585" stroke="#111111" stroke-width="4"/>
+<line x1="270.59" y1="494.978" x2="694.855" y2="919.242" stroke="#111111" stroke-width="4"/>
+<line x1="264.934" y1="500.635" x2="689.198" y2="924.899" stroke="#111111" stroke-width="4"/>
+<line x1="259.277" y1="506.291" x2="683.541" y2="930.555" stroke="#111111" stroke-width="4"/>
+<line x1="253.62" y1="511.948" x2="677.884" y2="936.212" stroke="#111111" stroke-width="4"/>
+<line x1="247.963" y1="517.605" x2="672.227" y2="941.869" stroke="#111111" stroke-width="4"/>
+<line x1="242.306" y1="523.262" x2="666.57" y2="947.526" stroke="#111111" stroke-width="4"/>
+<line x1="236.65" y1="528.919" x2="660.914" y2="953.183" stroke="#111111" stroke-width="4"/>
+<line x1="230.993" y1="534.576" x2="655.257" y2="958.84" stroke="#111111" stroke-width="4"/>
+<line x1="225.336" y1="540.233" x2="649.6" y2="964.497" stroke="#111111" stroke-width="4"/>
+<line x1="219.679" y1="545.889" x2="643.943" y2="970.154" stroke="#111111" stroke-width="4"/>
+<line x1="214.022" y1="551.546" x2="638.286" y2="975.81" stroke="#111111" stroke-width="4"/>
+<line x1="208.365" y1="557.203" x2="632.629" y2="981.467" stroke="#111111" stroke-width="4"/>
+<line x1="202.709" y1="562.86" x2="626.973" y2="987.124" stroke="#111111" stroke-width="4"/>
+<line x1="197.051" y1="568.517" x2="621.315" y2="992.781" stroke="#111111" stroke-width="4"/>
+<line x1="191.395" y1="574.174" x2="615.659" y2="998.438" stroke="#111111" stroke-width="4"/>
+<line x1="185.738" y1="579.83" x2="610.002" y2="1004.09" stroke="#111111" stroke-width="4"/>
+<line x1="180.081" y1="585.487" x2="604.345" y2="1009.75" stroke="#111111" stroke-width="4"/>
+<line x1="174.424" y1="591.144" x2="598.688" y2="1015.41" stroke="#111111" stroke-width="4"/>
+<line x1="168.767" y1="596.801" x2="593.031" y2="1021.07" stroke="#111111" stroke-width="4"/>
+<line x1="163.111" y1="602.458" x2="587.375" y2="1026.72" stroke="#111111" stroke-width="4"/>
+<line x1="157.454" y1="608.115" x2="581.718" y2="1032.38" stroke="#111111" stroke-width="4"/>
+<line x1="151.797" y1="613.772" x2="576.061" y2="1038.04" stroke="#111111" stroke-width="4"/>
+<line x1="146.14" y1="619.429" x2="570.404" y2="1043.69" stroke="#111111" stroke-width="4"/>
+<line x1="140.483" y1="625.085" x2="564.747" y2="1049.35" stroke="#111111" stroke-width="4"/>
+<line x1="134.826" y1="630.742" x2="559.09" y2="1055.01" stroke="#111111" stroke-width="4"/>
+<line x1="129.169" y1="636.399" x2="553.433" y2="1060.66" stroke="#111111" stroke-width="4"/>
+<line x1="123.512" y1="642.056" x2="547.776" y2="1066.32" stroke="#111111" stroke-width="4"/>
+<line x1="117.856" y1="647.713" x2="542.12" y2="1071.98" stroke="#111111" stroke-width="4"/>
+<line x1="112.199" y1="653.369" x2="536.463" y2="1077.63" stroke="#111111" stroke-width="4"/>
+<line x1="106.542" y1="659.027" x2="530.806" y2="1083.29" stroke="#111111" stroke-width="4"/>
+<line x1="100.885" y1="664.683" x2="525.149" y2="1088.95" stroke="#111111" stroke-width="4"/>
+<line x1="95.2282" y1="670.34" x2="519.492" y2="1094.6" stroke="#111111" stroke-width="4"/>
+<line x1="89.5714" y1="675.997" x2="513.836" y2="1100.26" stroke="#111111" stroke-width="4"/>
+<line x1="83.9147" y1="681.654" x2="508.179" y2="1105.92" stroke="#111111" stroke-width="4"/>
+<line x1="78.2575" y1="687.311" x2="502.522" y2="1111.57" stroke="#111111" stroke-width="4"/>
+<line x1="72.6007" y1="692.968" x2="496.865" y2="1117.23" stroke="#111111" stroke-width="4"/>
+<line x1="66.944" y1="698.624" x2="491.208" y2="1122.89" stroke="#111111" stroke-width="4"/>
+<line x1="61.2873" y1="704.281" x2="485.551" y2="1128.55" stroke="#111111" stroke-width="4"/>
+<line x1="55.63" y1="709.938" x2="479.894" y2="1134.2" stroke="#111111" stroke-width="4"/>
+</g>
+<rect x="126" y="668" width="520" height="46" stroke="#111111" stroke-width="4"/>
+<defs>
+<clipPath id="svg1_clip0_39_193">
+<rect x="126" y="668" width="520" height="46" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+      <span class="phase-illustration__label">Immersion</span>
+    </div>
+    <div class="phase-illustration-cell">
+      <svg class="phase-illustration"   viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#svg4_clip0_37_1064)">
+<line x1="400" y1="220" x2="490" y2="220" stroke="#111111" stroke-width="4"/>
+<line x1="400" y1="228" x2="490" y2="228" stroke="#111111" stroke-width="4"/>
+<line x1="400" y1="236" x2="490" y2="236" stroke="#111111" stroke-width="4"/>
+<line x1="400" y1="244" x2="490" y2="244" stroke="#111111" stroke-width="4"/>
+<line x1="400" y1="252" x2="490" y2="252" stroke="#111111" stroke-width="4"/>
+<line x1="400" y1="260" x2="490" y2="260" stroke="#111111" stroke-width="4"/>
+<line x1="400" y1="268" x2="490" y2="268" stroke="#111111" stroke-width="4"/>
+<line x1="400" y1="276" x2="490" y2="276" stroke="#111111" stroke-width="4"/>
+<line x1="400" y1="284" x2="490" y2="284" stroke="#111111" stroke-width="4"/>
+<line x1="400" y1="292" x2="490" y2="292" stroke="#111111" stroke-width="4"/>
+<line x1="400" y1="300" x2="490" y2="300" stroke="#111111" stroke-width="4"/>
+<line x1="400" y1="308" x2="490" y2="308" stroke="#111111" stroke-width="4"/>
+</g>
+<rect x="400" y="218" width="90" height="90" rx="45" stroke="#111111" stroke-width="4"/>
+<g clip-path="url(#svg4_clip1_37_1064)">
+<line x1="222" y1="492" x2="312" y2="492" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="500" x2="312" y2="500" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="508" x2="312" y2="508" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="516" x2="312" y2="516" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="524" x2="312" y2="524" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="532" x2="312" y2="532" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="540" x2="312" y2="540" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="548" x2="312" y2="548" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="556" x2="312" y2="556" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="564" x2="312" y2="564" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="572" x2="312" y2="572" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="580" x2="312" y2="580" stroke="#111111" stroke-width="4"/>
+</g>
+<rect x="222" y="490" width="90" height="90" rx="45" stroke="#111111" stroke-width="4"/>
+<g clip-path="url(#svg4_clip2_37_1064)">
+<line x1="222" y1="222" x2="312" y2="222" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="230" x2="312" y2="230" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="238" x2="312" y2="238" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="246" x2="312" y2="246" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="254" x2="312" y2="254" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="262" x2="312" y2="262" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="270" x2="312" y2="270" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="278" x2="312" y2="278" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="286" x2="312" y2="286" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="294" x2="312" y2="294" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="302" x2="312" y2="302" stroke="#111111" stroke-width="4"/>
+<line x1="222" y1="310" x2="312" y2="310" stroke="#111111" stroke-width="4"/>
+</g>
+<rect x="222" y="220" width="90" height="90" rx="45" stroke="#111111" stroke-width="4"/>
+<g clip-path="url(#svg4_clip3_37_1064)">
+<line x1="312" y1="310" x2="402" y2="310" stroke="#111111" stroke-width="4"/>
+<line x1="312" y1="318" x2="402" y2="318" stroke="#111111" stroke-width="4"/>
+<line x1="312" y1="326" x2="402" y2="326" stroke="#111111" stroke-width="4"/>
+<line x1="312" y1="334" x2="402" y2="334" stroke="#111111" stroke-width="4"/>
+<line x1="312" y1="342" x2="402" y2="342" stroke="#111111" stroke-width="4"/>
+<line x1="312" y1="350" x2="402" y2="350" stroke="#111111" stroke-width="4"/>
+<line x1="312" y1="358" x2="402" y2="358" stroke="#111111" stroke-width="4"/>
+<line x1="312" y1="366" x2="402" y2="366" stroke="#111111" stroke-width="4"/>
+<line x1="312" y1="374" x2="402" y2="374" stroke="#111111" stroke-width="4"/>
+<line x1="312" y1="382" x2="402" y2="382" stroke="#111111" stroke-width="4"/>
+<line x1="312" y1="390" x2="402" y2="390" stroke="#111111" stroke-width="4"/>
+<line x1="312" y1="398" x2="402" y2="398" stroke="#111111" stroke-width="4"/>
+</g>
+<rect x="312" y="308" width="90" height="90" rx="45" stroke="#111111" stroke-width="4"/>
+<line x1="76" y1="218" x2="724" y2="218" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<line x1="76" y1="308" x2="724" y2="308" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<line x1="76" y1="398" x2="724" y2="398" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<line x1="76" y1="488" x2="724" y2="488" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<line x1="76" y1="578" x2="724" y2="578" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<line x1="582" y1="79" x2="582" y2="727" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<line x1="492" y1="79" x2="492" y2="727" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<line x1="402" y1="79" x2="402" y2="727" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<line x1="312" y1="79" x2="312" y2="727" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<line x1="222" y1="79" x2="222" y2="727" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<path d="M492 580V584V580ZM493.005 400.005L492.961 404.005L493.005 400.005ZM447 308V304H359V308V312H447V308ZM359 398V402H491V398V394H359V398ZM493.005 400.005L492.961 404.005C540.014 404.52 578 442.824 578 490H582H586C586 438.435 544.481 396.568 493.048 396.006L493.005 400.005ZM582 490H578C578 537.496 539.496 576 492 576V580V584C543.915 584 586 541.915 586 490H582ZM492 580V576H490V580V584H492V580ZM490 580V576C442.504 576 404 537.496 404 490H400H396C396 541.915 438.085 584 490 584V580ZM398 488V484H357V488V492H398V488ZM314 531H310V535H314H318V531H314ZM269 580V576H267V580V584H269V580ZM222 535H226V263H222H218V535H222ZM267 218V222H447V218V214H267V218ZM357 488V484C331.043 484 310 505.043 310 531H314H318C318 509.461 335.461 492 357 492V488ZM400 490H404C404 486.686 401.314 484 398 484V488V492C396.895 492 396 491.105 396 490H400ZM492 399H488C488 401.796 490.269 403.976 492.961 404.005L493.005 400.005L493.048 396.006C494.636 396.023 496 397.309 496 399H492ZM447 218V222C469.644 222 488 240.356 488 263H492H496C496 235.938 474.062 214 447 214V218ZM491 398V402C489.343 402 488 400.657 488 399H492H496C496 396.239 493.761 394 491 394V398ZM222 263H226C226 240.356 244.356 222 267 222V218V214C239.938 214 218 235.938 218 263H222ZM314 353H310C310 380.062 331.938 402 359 402V398V394C336.356 394 318 375.644 318 353H314ZM267 580V576C244.356 576 226 557.644 226 535H222H218C218 562.062 239.938 584 267 584V580ZM359 308V304C331.938 304 310 325.938 310 353H314H318C318 330.356 336.356 312 359 312V308ZM314 535H310C310 557.644 291.644 576 269 576V580V584C296.062 584 318 562.062 318 535H314ZM447 308V312C474.062 312 496 290.062 496 263H492H488C488 285.644 469.644 304 447 304V308Z" fill="#111111"/>
+<defs>
+<clipPath id="svg4_clip0_37_1064">
+<rect x="400" y="218" width="90" height="90" rx="45" fill="white"/>
+</clipPath>
+<clipPath id="svg4_clip1_37_1064">
+<rect x="222" y="490" width="90" height="90" rx="45" fill="white"/>
+</clipPath>
+<clipPath id="svg4_clip2_37_1064">
+<rect x="222" y="220" width="90" height="90" rx="45" fill="white"/>
+</clipPath>
+<clipPath id="svg4_clip3_37_1064">
+<rect x="312" y="308" width="90" height="90" rx="45" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+      <span class="phase-illustration__label">Iteration</span>
+    </div>
+    <div class="phase-illustration-cell">
+      <svg class="phase-illustration"   viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line x1="118" y1="218" x2="450" y2="218" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<line x1="118" y1="308" x2="450" y2="308" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<line x1="118" y1="398" x2="450" y2="398" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<line x1="118" y1="488" x2="450" y2="488" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<path d="M450 132L450 576" stroke="black" stroke-width="4" stroke-linecap="round"/>
+<line x1="362" y1="76" x2="362" y2="631" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<line x1="272" y1="76" x2="272" y2="631" stroke="black" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M684 128H688V124H684V128ZM684 722V726H688V722H684ZM448 722H444V726H448V722ZM448 574H452V570H448V574ZM223 574V578V578V574ZM684 128H680V722H684H688V128H684ZM684 722V718H448V722V726H684V722ZM448 722H452V574H448H444V722H448ZM448 574V570H223V574V578H448V574ZM223 574V570C200.356 570 182 551.644 182 529H178H174C174 556.062 195.938 578 223 578V574ZM178 529H182V173H178H174V529H178ZM178 173H182C182 150.356 200.356 132 223 132V128V124C195.938 124 174 145.938 174 173H178ZM223 128V132H684V128V124H223V128Z" fill="#111111"/>
+<g clip-path="url(#svg5_clip0_37_1152)">
+<line x1="272" y1="220" x2="362" y2="220" stroke="#111111" stroke-width="4"/>
+<line x1="272" y1="228" x2="362" y2="228" stroke="#111111" stroke-width="4"/>
+<line x1="272" y1="236" x2="362" y2="236" stroke="#111111" stroke-width="4"/>
+<line x1="272" y1="244" x2="362" y2="244" stroke="#111111" stroke-width="4"/>
+<line x1="272" y1="252" x2="362" y2="252" stroke="#111111" stroke-width="4"/>
+<line x1="272" y1="260" x2="362" y2="260" stroke="#111111" stroke-width="4"/>
+<line x1="272" y1="268" x2="362" y2="268" stroke="#111111" stroke-width="4"/>
+<line x1="272" y1="276" x2="362" y2="276" stroke="#111111" stroke-width="4"/>
+<line x1="272" y1="284" x2="362" y2="284" stroke="#111111" stroke-width="4"/>
+<line x1="272" y1="292" x2="362" y2="292" stroke="#111111" stroke-width="4"/>
+<line x1="272" y1="300" x2="362" y2="300" stroke="#111111" stroke-width="4"/>
+<line x1="272" y1="308" x2="362" y2="308" stroke="#111111" stroke-width="4"/>
+</g>
+<rect x="272" y="218" width="90" height="90" rx="45" stroke="#111111" stroke-width="4"/>
+<g clip-path="url(#svg5_clip1_37_1152)">
+<line x1="360" y1="400" x2="360" y2="490" stroke="#111111" stroke-width="4"/>
+<line x1="352" y1="400" x2="352" y2="490" stroke="#111111" stroke-width="4"/>
+<line x1="344" y1="400" x2="344" y2="490" stroke="#111111" stroke-width="4"/>
+<line x1="336" y1="400" x2="336" y2="490" stroke="#111111" stroke-width="4"/>
+<line x1="328" y1="400" x2="328" y2="490" stroke="#111111" stroke-width="4"/>
+<line x1="320" y1="400" x2="320" y2="490" stroke="#111111" stroke-width="4"/>
+<line x1="312" y1="400" x2="312" y2="490" stroke="#111111" stroke-width="4"/>
+<line x1="304" y1="400" x2="304" y2="490" stroke="#111111" stroke-width="4"/>
+<line x1="296" y1="400" x2="296" y2="490" stroke="#111111" stroke-width="4"/>
+<line x1="288" y1="400" x2="288" y2="490" stroke="#111111" stroke-width="4"/>
+<line x1="280" y1="400" x2="280" y2="490" stroke="#111111" stroke-width="4"/>
+<line x1="272" y1="400" x2="272" y2="490" stroke="#111111" stroke-width="4"/>
+</g>
+<rect x="362" y="400" width="90" height="90" rx="45" transform="rotate(90 362 400)" stroke="#111111" stroke-width="4"/>
+<defs>
+<clipPath id="svg5_clip0_37_1152">
+<rect x="272" y="218" width="90" height="90" rx="45" fill="white"/>
+</clipPath>
+<clipPath id="svg5_clip1_37_1152">
+<rect x="362" y="400" width="90" height="90" rx="45" transform="rotate(90 362 400)" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+      <span class="phase-illustration__label">Craft</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================
+     HOW WE GET THERE
+======================================== -->
+<section id="how" class="section reveal">
+  <div class="container">
+    <div class="section__header">
+      <span class="section-number">04</span>
+      <span class="section-label">How We Get There</span>
+    </div>
+
+    <h2 class="section__title" style="margin-bottom: var(--space-sm);">
+      Embedded from day one.<br><strong>Built with you, not handed to you.</strong>
+    </h2>
+
+    <div class="how-text">
+      <p>
+        Departure is a principal-led practice. Ben Fogarty is doing the work, not managing someone who is doing the work. The same person in the first meeting is the person making the decisions throughout.
+      </p>
+      <p>
+        The founding team's judgment is embedded in every decision, not overridden by it. zaimler's understanding of the product, the architecture, and the customers shapes what gets made. Departure brings the design language and the storytelling structure to make that judgment visible.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<div class="accent-bar"></div>
+
+
+<!-- ========================================
+     ENGAGEMENT STRUCTURE
+======================================== -->
+<section id="engagement" class="section reveal">
+  <div class="container">
+    <div class="section__header">
+      <span class="section-number">05</span>
+      <span class="section-label">Engagement Structure</span>
+    </div>
+
+    <h2 class="section__title" style="margin-bottom: var(--space-xl);">
+      Three phases.<br><strong>One continuous arc.</strong>
+    </h2>
+
+    <div class="phase">
+      <div class="phase__marker">
+        <div class="phase__number">Phase 01</div>
+        <div class="phase__weeks">Weeks 1–3</div>
+      </div>
+      <div>
+        <h3 class="phase__title">Immersion and Positioning</h3>
+        <p class="phase__desc">
+          Full immersion in the product, the customers, and the competitive space. The goal is a clear narrative platform: the language that governs everything from the website to the sales deck to the investor conversation. Not a hypothesis about what zaimler is. A discovered, agreed-upon truth.
+        </p>
+        <ul class="phase__deliverables">
+          <li>Narrative platform</li>
+          <li>Messaging architecture</li>
+          <li>Voice and tone guide</li>
+          <li>Positioning workshop sessions</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase__marker">
+        <div class="phase__number">Phase 02</div>
+        <div class="phase__weeks">Weeks 4–8</div>
+      </div>
+      <div>
+        <h3 class="phase__title">Identity and Website</h3>
+        <p class="phase__desc">
+          Move with craft and urgency. Ship something that can withstand a16z-level scrutiny and convert the enterprise buyer who arrives cold and decides in the first sixty seconds. Identity system first, then the front door it produces.
+        </p>
+        <ul class="phase__deliverables">
+          <li>Visual identity system</li>
+          <li>Logo, mark, and type system</li>
+          <li>Color and motion principles</li>
+          <li>Website design and development</li>
+          <li>Core marketing pages</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase__marker">
+        <div class="phase__number">Phase 03</div>
+        <div class="phase__weeks">Weeks 9–12</div>
+      </div>
+      <div>
+        <h3 class="phase__title">First Iteration Cycle</h3>
+        <p class="phase__desc">
+          Live feedback from real enterprise conversations, recruiting, and investor interest shapes what gets sharpened. This is not a warranty period. It is the phase where the work gets more precise because the world is now talking back.
+        </p>
+        <ul class="phase__deliverables">
+          <li>Refinements based on live signal</li>
+          <li>Content and copy updates</li>
+          <li>Asset production for priority channels</li>
+          <li>Handoff and documentation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================================
+     INVESTMENT
+======================================== -->
+<section id="investment" class="section reveal" style="background: var(--color-surface);">
+  <div class="container">
+    <div class="section__header">
+      <span class="section-number">06</span>
+      <span class="section-label">Investment</span>
+    </div>
+
+    <h2 class="section__title">
+      90-day pilot.<br><strong>One continuous arc.</strong>
+    </h2>
+
+    <div class="investment-card">
+      <div>
+        <div class="investment-card__title">90-Day Pilot Engagement</div>
+        <p class="investment-card__scope">
+          Positioning, identity, website, and first iteration cycle. All phases included. No retainer that trails off. No phase gates that stall momentum.
+        </p>
+      </div>
+      <div class="investment-card__amount">
+        $36,000–$60,000
+        <span style="font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400; letter-spacing: 0.04em; color: var(--color-muted);">Paid in thirds at the start of each month</span>
+      </div>
+    </div>
+
+    <p style="font-size: 0.85rem; color: var(--color-muted); margin-top: var(--space-md); line-height: 1.6;">
+      The range reflects the depth of embedded involvement required. Team composition, existing design infrastructure, and how quickly the sales pipeline needs the brand to perform all shape where the engagement lands. The proposal conversation is where we determine the right level together.
+    </p>
+  </div>
+</section>
+
+
+<!-- ========================================
+     QUESTIONS
+======================================== -->
+<section id="questions" class="section reveal">
+  <div class="container">
+    <div class="section__header">
+      <span class="section-number">07</span>
+      <span class="section-label">Before We Begin</span>
+    </div>
+
+    <h2 class="section__title" style="margin-bottom: var(--space-md);">
+      Questions to explore in<br><strong>the first conversation.</strong>
+    </h2>
+
+    <p style="color: var(--color-muted); margin-bottom: var(--space-lg); max-width: 560px; line-height: 1.65;">
+      These are not obstacles. They are what will make the work sharper. The proposal conversation is where we start working through them together.
+    </p>
+
+    <ol class="questions-list">
+      <li>What does zaimler look like at scale? When a hundred enterprises are running on the graph, what changes about the product, the company, the category?</li>
+      <li>When a CTO gets it, what's the moment? What shifts in the conversation, and what were they thinking about before that shift happened?</li>
+      <li>What do you want someone to feel in the first ten seconds on the site? Not what you want them to know. What you want them to feel.</li>
+      <li>What's the thing about the product that's hardest to explain but most important to understand? The thing that gets lost in a one-liner.</li>
+      <li>Who do buyers compare you to, even if the comparison is wrong? What does that tell us about how they're framing the problem?</li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ========================================
+     CLOSING
+======================================== -->
+<section id="closing" class="section section--accent-bg closing reveal">
+  <div class="container">
+    <h2 class="closing__headline">
+      Context infrastructure changes<br>what enterprises can imagine.
+    </h2>
+
+    <p class="closing__body">
+      When AI agents can actually reason over an organization's knowledge, not just search it, the implications go further than most buyers have considered yet. The brand should open that door. Not by explaining the technology, but by making what comes next feel obvious.
+    </p>
+
+    <p class="closing__body">
+      The right next step is a focused conversation: 45-60 minutes to get into the questions above, confirm scope, and decide whether to move forward together.
+    </p>
+
+    <p style="font-size: 1.25rem; font-weight: 500; color: var(--color-white); margin-bottom: var(--space-xl);">
+      Let's build something worthy of what this makes possible.
+    </p>
+
+    <div class="closing__footer">
+      <a href="https://departure.is" class="closing__logo-link">
+        <svg class="logo-mark logo-mark--white" width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.8911 27.6641V5.90942H16.1623C23.8885 5.90942 28.7364 10.1513 28.7364 16.7867C28.7364 23.4222 23.8885 27.6641 16.1623 27.6641H4.8911ZM9.86013 23.3919H16.1623C20.8889 23.3919 23.6461 20.7862 23.6461 16.7867C23.6461 12.7873 20.8889 10.1816 16.132 10.1816H9.86013V23.3919Z" fill="currentColor"/>
+          <path d="M39.7251 5.90942H60.8132V10.2422H44.6941V14.4234H59.0861V18.6956H44.6941V23.3313H60.8132V27.6641H39.7251V5.90942Z" fill="currentColor"/>
+          <path d="M77.617 20.0893V27.6641H72.5571V5.90942H86.2522C91.3728 5.90942 94.7359 8.33334 94.7359 12.9994C94.7359 17.6351 91.3728 20.0893 86.2522 20.0893H77.617ZM77.617 15.8475H85.9795C88.3732 15.8475 89.7366 14.787 89.7366 12.9994C89.7366 11.2117 88.3732 10.1816 85.9795 10.1816H77.617V15.8475Z" fill="currentColor"/>
+          <path d="M13.799 39.2375H19.5255L30.3422 60.9922H24.8581L22.5554 56.3261H10.6176L8.31488 60.9922H2.92167L13.799 39.2375ZM16.6168 44.2066L12.6779 52.1449H20.5254L16.6168 44.2066Z" fill="currentColor"/>
+          <path d="M44.285 53.266V60.9922H39.2251V39.2375H53.0717C58.1316 39.2375 61.5251 41.6918 61.5251 46.2366C61.5251 49.5089 59.6769 51.7813 56.6167 52.7509L62.0402 60.9922H56.2531L51.3144 53.266H44.285ZM44.285 49.1453H52.799C55.1926 49.1453 56.5561 48.0848 56.5561 46.3275C56.5561 44.5399 55.1926 43.5097 52.799 43.5097H44.285V49.1453Z" fill="currentColor"/>
+          <path d="M95.2813 43.5703H85.8584V60.9922H80.7984V43.5703H71.3452V39.2375H95.2813V43.5703Z" fill="currentColor"/>
+          <path d="M16.2078 94.6556C8.63309 94.6556 4.87602 90.5955 4.87602 84.2933V72.5676H9.93594V83.8994C9.93594 87.7474 11.7236 90.2319 16.2078 90.2319C20.6921 90.2319 22.4494 87.7474 22.4494 83.8994V72.5676H27.5093V84.2933C27.5093 90.5955 23.7523 94.6556 16.2078 94.6556Z" fill="currentColor"/>
+          <path d="M44.285 86.596V94.3223H39.2251V72.5676H53.0717C58.1316 72.5676 61.5251 75.0218 61.5251 79.5667C61.5251 82.839 59.6769 85.1114 56.6167 86.081L62.0402 94.3223H56.2531L51.3144 86.596H44.285ZM44.285 82.4754H52.799C55.1926 82.4754 56.5561 81.4149 56.5561 79.6576C56.5561 77.8699 55.1926 76.8398 52.799 76.8398H44.285V82.4754Z" fill="currentColor"/>
+          <path d="M73.0571 72.5676H94.1452V76.9004H78.0261V81.0816H92.4181V85.3538H78.0261V89.9895H94.1452V94.3223H73.0571V72.5676Z" fill="currentColor"/>
+        </svg>
+        <span>departure.is</span>
+      </a>
+      <span>Proposal R1 · March 2026</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ========================================
+     SCROLL REVEAL + SIDE NAV
+======================================== -->
+<script>
+  // Reveal animation
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.08,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // Side nav
+  const sideNav = document.getElementById('sideNav');
+  const cover = document.querySelector('.cover');
+  const navItems = document.querySelectorAll('.side-nav__item');
+  const body = document.body;
+
+  const sectionIds = [
+    'what-if', 'challenge', 'design-pov',
+    'how', 'engagement', 'investment',
+    'questions', 'closing'
+  ];
+
+  const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+  // Show/hide nav based on cover visibility
+  const coverObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+        sideNav.classList.remove('visible');
+        body.classList.remove('nav-active');
+      } else if (!entry.isIntersecting) {
+        sideNav.classList.add('visible');
+        body.classList.add('nav-active');
+      }
+    });
+  }, { threshold: [0, 0.3, 1] });
+
+  coverObserver.observe(cover);
+
+  // Track active section
+  function updateNav() {
+    const scrollY = window.scrollY + window.innerHeight * 0.4;
+
+    let currentId = sectionIds[0];
+    for (const section of sections) {
+      if (section.offsetTop <= scrollY) {
+        currentId = section.id;
+      }
+    }
+
+    navItems.forEach(item => {
+      item.classList.toggle('active', item.dataset.section === currentId);
+    });
+  }
+
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+
+  // Smooth scroll for nav clicks
+  navItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.getElementById(item.dataset.section);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
