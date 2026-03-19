@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zaimler — Domain Context Infrastructure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080B14;
+  --fg:#E8EAF0;
+  --muted:#6B7084;
+  --accent:#4A6CF7;
+  --accentL:#7B93FA;
+  --red:#EF4444;
+  --green:#4AE68A;
+  --surface:rgba(74,108,247,0.06);
+  --rule:rgba(255,255,255,0.06);
+  --gutter:clamp(2rem,6vw,5rem);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Serif',serif;background:var(--bg);color:var(--fg);overflow-x:hidden}
+
+/* ─── MOIRÉ CANVAS ─── */
+#moire{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.6}
+
+/* ─── GLOBAL LAYOUT ─── */
+.section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:var(--gutter)}
+.section--full{min-height:100vh}
+.section--short{min-height:auto;padding-top:clamp(4rem,8vw,8rem);padding-bottom:clamp(4rem,8vw,8rem)}
+
+/* ─── NAV ─── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.25rem var(--gutter);display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(16px);background:rgba(8,11,20,0.7);border-bottom:1px solid var(--rule)}
+.nav__logo{font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:1.15rem;color:var(--accent);letter-spacing:-0.02em}
+.nav__links{display:flex;gap:2rem;font-family:'Instrument Sans',sans-serif;font-size:0.8rem;font-weight:500;color:var(--muted)}
+.nav__links a{color:var(--muted);text-decoration:none;transition:color 0.3s}
+.nav__links a:hover{color:var(--fg)}
+
+/* ─── TYPOGRAPHY ─── */
+.headline{font-family:'Inter Tight',sans-serif;font-weight:600;letter-spacing:-0.04em;line-height:0.95}
+.headline--xl{font-size:clamp(3rem,8vw,6.5rem)}
+.headline--lg{font-size:clamp(2.25rem,5vw,4rem)}
+.headline--md{font-size:clamp(1.75rem,3.5vw,2.75rem)}
+.headline em{font-style:normal;font-weight:700;color:var(--accent)}
+.headline .red{color:var(--red)}
+.headline .green{color:var(--green)}
+.sub{font-size:clamp(1.05rem,1.5vw,1.25rem);line-height:1.65;color:var(--muted);max-width:560px}
+.label{font-family:'Instrument Sans',sans-serif;font-size:0.8rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.6rem}
+.label::before{content:'';width:20px;height:1.5px;background:var(--accent)}
+
+/* ─── STAT ─── */
+.stat{font-family:'Inter Tight',sans-serif;font-weight:700;letter-spacing:-0.03em;line-height:1}
+.stat--giant{font-size:clamp(5rem,12vw,9rem);color:var(--red)}
+
+/* ─── CARDS ─── */
+.cards{display:grid;gap:1px;background:var(--rule)}
+.cards--3{grid-template-columns:repeat(3,1fr)}
+.cards--4{grid-template-columns:repeat(4,1fr)}
+.card{background:rgba(0,0,0,0.3);padding:clamp(1.75rem,3vw,2.75rem)}
+.card__num{font-family:'Inter Tight',sans-serif;font-size:2.5rem;font-weight:300;color:rgba(255,255,255,0.06);margin-bottom:1rem}
+.card__title{font-family:'Inter Tight',sans-serif;font-size:1.25rem;font-weight:600;margin-bottom:0.5rem;line-height:1.3}
+.card__desc{font-size:1rem;line-height:1.6;color:var(--muted)}
+.card__stat{font-family:'Inter Tight',sans-serif;font-size:2.5rem;font-weight:700;margin-bottom:0.25rem;line-height:1}
+.card__stat.red{color:var(--red)}
+.card__stat.green{color:var(--green)}
+.card__stat.blue{color:var(--accent)}
+.card__stat.yellow{color:#F5B731}
+
+/* ─── TWO COL ─── */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(3rem,5vw,6rem);align-items:start}
+.split--center{align-items:center}
+
+/* ─── COMPARISON ─── */
+.compare{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--rule);border-radius:12px;overflow:hidden;background:rgba(0,0,0,0.3)}
+.compare__col{padding:clamp(2rem,3vw,3rem)}
+.compare__col--left{border-right:1px solid var(--rule)}
+.compare__label{font-family:'Instrument Sans',sans-serif;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;margin-bottom:1.5rem}
+.compare__label.red{color:var(--red)}
+.compare__label.green{color:var(--green)}
+.compare__item{margin-bottom:1.5rem}
+.compare__item h4{font-family:'Inter Tight',sans-serif;font-size:1.2rem;font-weight:600;margin-bottom:0.3rem}
+.compare__item p{font-size:1.05rem;color:var(--muted);line-height:1.55}
+
+/* ─── STACK DIAGRAM ─── */
+.stack{display:flex;flex-direction:column;gap:1.25rem;max-width:600px}
+.stack__layer{padding:1.5rem 1.75rem;border:1px solid var(--rule);border-radius:8px;background:rgba(0,0,0,0.3)}
+.stack__layer--accent{border-color:var(--accent);background:rgba(0,0,0,0.35)}
+.stack__layer h4{font-family:'Inter Tight',sans-serif;font-size:1.15rem;font-weight:600;margin-bottom:0.25rem}
+.stack__layer p{font-size:0.95rem;color:var(--muted);line-height:1.5}
+.stack__label{font-family:'Instrument Sans',sans-serif;font-size:1rem;color:var(--accent);font-weight:600;margin-right:0.5rem}
+
+/* ─── FOOTER ─── */
+.footer{font-family:'Instrument Sans',sans-serif;border-top:1px solid var(--rule);padding:2rem var(--gutter);display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;color:var(--muted);position:relative;z-index:1}
+
+/* ─── REVEAL ─── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.15s}
+.reveal-delay-2{transition-delay:0.3s}
+.reveal-delay-3{transition-delay:0.45s}
+
+/* ─── DIVIDER ─── */
+.divider{height:1px;background:var(--rule);margin:0 var(--gutter)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .split,.compare,.cards--3,.cards--4{grid-template-columns:1fr}
+  .nav__links{display:none}
+  .compare__col--left{border-right:none;border-bottom:1px solid var(--rule)}
+}
+</style>
+</head>
+<body>
+
+<canvas id="moire"></canvas>
+
+<nav class="nav">
+  <div class="nav__logo">zaimler</div>
+  <div class="nav__links">
+    <a href="#problem">Problem</a>
+    <a href="#solution">Solution</a>
+    <a href="#product">Product</a>
+    <a href="#impact">Impact</a>
+  </div>
+</nav>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="section section--full">
+  <div class="label reveal">Domain Context Infrastructure</div>
+  <h1 class="headline headline--xl reveal reveal-delay-1">AI-Native Context<br>Infrastructure<br><em>For Enterprise AI</em></h1>
+  <p class="sub reveal reveal-delay-2" style="margin-top:2rem">The domain context layer for making Enterprise AI work.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ THE BIG SHIFT ═══════ -->
+<section class="section section--full" id="problem">
+  <div class="label reveal">The Big Shift</div>
+  <h2 class="headline headline--lg reveal reveal-delay-1">Every industry is getting reshaped by AI.<br><em>The winners won't be those with the best model.</em></h2>
+  <p class="sub reveal reveal-delay-2" style="margin-top:2rem">The question isn't which model you use. It's whether your AI understands your business.</p>
+  <div class="split reveal reveal-delay-3" style="margin-top:clamp(3rem,5vw,5rem);max-width:800px">
+    <div style="padding:1.5rem;border:1px solid var(--red);border-radius:8px;text-align:center">
+      <div style="font-size:1.25rem;font-weight:700;color:var(--red);margin-bottom:0.5rem">AI Models</div>
+      <div style="font-size:1rem;color:var(--muted)">Commoditizing</div>
+      <div style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem">GPT · Claude · Gemini · Llama</div>
+    </div>
+    <div style="padding:1.5rem;border:1px solid var(--accent);border-radius:8px;text-align:center">
+      <div style="font-size:1.25rem;font-weight:700;color:var(--accent);margin-bottom:0.5rem">Domain Intelligence</div>
+      <div style="font-size:1rem;color:var(--fg)">The New Moat</div>
+      <div style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem">Your proprietary data activated</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ THE SITUATION ═══════ -->
+<section class="section section--full">
+  <div class="split split--center">
+    <div>
+      <div class="label reveal">The Situation</div>
+      <div class="stat stat--giant reveal reveal-delay-1">95%</div>
+      <h2 class="headline headline--md reveal reveal-delay-2" style="margin-top:0.5rem">of Enterprise AI pilots fail to deliver measurable ROI.</h2>
+      <p class="sub reveal reveal-delay-3" style="margin-top:1.5rem">The root cause is not the AI. It is the absence of domain understanding.</p>
+      <p style="font-size:0.8rem;color:var(--muted);margin-top:2rem" class="reveal">Sources: MIT 2025, Deloitte 2025, S&P Global Market Intelligence</p>
+    </div>
+    <div class="reveal reveal-delay-2" style="display:flex;flex-direction:column;gap:1.25rem">
+      <div style="padding:1.75rem;background:rgba(0,0,0,0.3);border-radius:10px">
+        <div style="font-family:'Inter Tight',sans-serif;font-size:1.2rem;font-weight:600;color:var(--red);margin-bottom:0.4rem">Data Silos</div>
+        <div style="font-size:1.05rem;color:var(--muted);line-height:1.55">Information trapped across disconnected enterprise systems</div>
+      </div>
+      <div style="padding:1.75rem;background:rgba(0,0,0,0.3);border-radius:10px">
+        <div style="font-family:'Inter Tight',sans-serif;font-size:1.2rem;font-weight:600;color:var(--red);margin-bottom:0.4rem">No Domain Context</div>
+        <div style="font-size:1.05rem;color:var(--muted);line-height:1.55">Centralizing data does not equal domain understanding</div>
+      </div>
+      <div style="padding:1.75rem;background:rgba(0,0,0,0.3);border-radius:10px">
+        <div style="font-family:'Inter Tight',sans-serif;font-size:1.2rem;font-weight:600;color:var(--red);margin-bottom:0.4rem">Disconnected Systems</div>
+        <div style="font-size:1.05rem;color:var(--muted);line-height:1.55">Legacy infrastructure cannot communicate effectively</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ THE INSIGHT ═══════ -->
+<section class="section section--full" style="text-align:center;justify-content:center;align-items:center">
+  <h2 class="headline headline--xl reveal" style="max-width:900px">AI agents are brilliant.<br><em>But they know nothing about your business.</em></h2>
+  <p class="sub reveal reveal-delay-1" style="margin-top:2.5rem;text-align:center;max-width:500px">You would never expect a new hire to perform without onboarding. Yet we deploy AI agents with zero domain context.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ TWO WORLDS ═══════ -->
+<section class="section section--short">
+  <h2 class="headline headline--lg reveal">Two kinds of enterprises will emerge.</h2>
+  <p class="sub reveal reveal-delay-1" style="margin-top:1rem;margin-bottom:clamp(2.5rem,4vw,4rem)">The gap will be defined by one thing. Whether AI has domain context.</p>
+  <div class="compare reveal reveal-delay-2">
+    <div class="compare__col compare__col--left">
+      <div class="compare__label red">Without a context layer</div>
+      <div class="compare__item"><h4>Knowledge trapped in silos</h4><p>SMEs recreate context for every AI project.</p></div>
+      <div class="compare__item"><h4>AI agents operate blind</h4><p>Months to onboard. No domain understanding.</p></div>
+      <div class="compare__item"><h4>Zero accountability</h4><p>No audit trail. No compliance at scale.</p></div>
+    </div>
+    <div class="compare__col">
+      <div class="compare__label green">With zaimler</div>
+      <div class="compare__item"><h4>Governed, reusable knowledge</h4><p>Automated domain models. Built once, used everywhere.</p></div>
+      <div class="compare__item"><h4>Agents with contextual intelligence</h4><p>Activate AI in any domain in days.</p></div>
+      <div class="compare__item"><h4>Full audit trail and access control</h4><p>Versioned playbooks. Complete traceability.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ THE MISSING LAYER ═══════ -->
+<section class="section section--full" id="solution">
+  <div class="split split--center">
+    <div>
+      <div class="label reveal">The Missing Layer</div>
+      <h2 class="headline headline--lg reveal reveal-delay-1">The problem isn't AI.<br><em>It's the missing domain layer.</em></h2>
+      <p class="sub reveal reveal-delay-2" style="margin-top:1.5rem">Enterprises need to bring AI to data, not data to AI.</p>
+    </div>
+    <div class="stack reveal reveal-delay-2">
+      <div class="stack__layer">
+        <h4>AI Agents & Applications</h4>
+        <p>Agents, analytics, automation, copilots</p>
+      </div>
+      <div class="stack__layer stack__layer--accent">
+        <h4><span class="stack__label">zaimler</span>The Missing Layer</h4>
+        <p>Semantic understanding, domain memory, contextual intelligence</p>
+      </div>
+      <div class="stack__layer">
+        <h4>Data Infrastructure</h4>
+        <p>Warehouses, lakes, databases, enterprise apps</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ CONNECT · UNDERSTAND · ACTIVATE ═══════ -->
+<section class="section section--short" id="product">
+  <div class="label reveal">How it works</div>
+  <h2 class="headline headline--lg reveal reveal-delay-1" style="margin-bottom:0.75rem">Connect · Understand · Activate</h2>
+  <p class="sub reveal reveal-delay-2" style="margin-bottom:clamp(3rem,5vw,4rem)">The domain context layer between your data and your AI.</p>
+  <div class="cards cards--3 reveal reveal-delay-3">
+    <div class="card">
+      <div class="card__num">01</div>
+      <div class="card__title">Connect</div>
+      <div style="font-weight:600;font-size:0.9rem;margin-bottom:0.5rem">Unify all enterprise data sources</div>
+      <div class="card__desc">Structured, unstructured, cloud, enterprise apps</div>
+    </div>
+    <div class="card">
+      <div class="card__num">02</div>
+      <div class="card__title">Understand</div>
+      <div style="font-weight:600;font-size:0.9rem;margin-bottom:0.5rem">Build domain-specific semantic models</div>
+      <div class="card__desc">Auto-infer ontologies, taxonomies, relationships</div>
+    </div>
+    <div class="card">
+      <div class="card__num">03</div>
+      <div class="card__title">Activate</div>
+      <div style="font-weight:600;font-size:0.9rem;margin-bottom:0.5rem">Power AI agents with vetted domain context</div>
+      <div class="card__desc">Domain context + skills.md → intelligent automation</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ VERTICAL ROI ═══════ -->
+<section class="section section--short" id="impact">
+  <div class="label reveal">Industry Vertical ROI</div>
+  <h2 class="headline headline--lg reveal reveal-delay-1" style="margin-bottom:clamp(2.5rem,4vw,4rem)">Domain context unlocks measurable value</h2>
+  <div class="cards cards--4 reveal reveal-delay-2">
+    <div class="card" style="text-align:center">
+      <div class="card__stat red">40-60%</div>
+      <div style="font-size:0.95rem;color:var(--muted);margin:0.75rem 0">reduction in claims cycle time</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--accent)">Insurance</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="card__stat green">3×</div>
+      <div style="font-size:0.95rem;color:var(--muted);margin:0.75rem 0">faster booking with governed data</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--accent)">Travel</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="card__stat blue">80%</div>
+      <div style="font-size:0.95rem;color:var(--muted);margin:0.75rem 0">less time on data reconciliation</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--accent)">Asset Mgmt</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="card__stat yellow">50%</div>
+      <div style="font-size:0.95rem;color:var(--muted);margin:0.75rem 0">reduction in false-positive alerts</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--accent)">Financial Services</div>
+    </div>
+  </div>
+  <p class="sub reveal" style="margin-top:2rem;font-size:0.8rem">Each cycle compounds value. More data → richer models → smarter agents.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ CLOSE ═══════ -->
+<section class="section section--full" style="text-align:center;justify-content:center;align-items:center">
+  <div class="nav__logo reveal" style="font-size:1.5rem;margin-bottom:3rem">zaimler</div>
+  <h2 class="headline headline--xl reveal reveal-delay-1" style="max-width:800px">The context layer that makes<br><em>Enterprise AI actually work.</em></h2>
+</section>
+
+<footer class="footer">
+  <div>zaimler</div>
+  <div>Confidential</div>
+</footer>
+
+<script>
+// ─── MOIRÉ CANVAS: Ported from hero_c with scroll-driven behavior ───
+const c = document.getElementById('moire');
+const ctx = c.getContext('2d');
+const dpr = window.devicePixelRatio || 1;
+let W, H, scrollY = 0, scrollMax = 1;
+
+function resize() {
+  W = window.innerWidth;
+  H = window.innerHeight;
+  c.width = W * dpr;
+  c.height = H * dpr;
+  ctx.scale(dpr, dpr);
+  scrollMax = document.body.scrollHeight - H;
+}
+resize();
+window.addEventListener('resize', () => { ctx.setTransform(1,0,0,1,0,0); resize(); });
+window.addEventListener('scroll', () => { scrollY = window.scrollY; });
+
+let t = 0;
+function noise(px, py, time) {
+  return Math.sin(px * 0.008 + time) * Math.cos(py * 0.006 + time * 0.7)
+    + Math.sin(px * 0.015 - time * 0.5) * Math.cos(py * 0.012 + time * 0.3) * 0.5
+    + Math.sin((px + 100) * 0.004 + time * 0.2) * Math.cos((py + 100) * 0.005 - time * 0.4) * 0.8;
+}
+
+function draw() {
+  t += 0.006;
+  ctx.clearRect(0, 0, W, H);
+
+  const progress = scrollMax > 0 ? scrollY / scrollMax : 0;
+
+  // Contour field parameters shift with scroll
+  const levels = 14;
+  const step = 0.18;
+  const res = 4;
+
+  // Time offset shifts with scroll so the terrain changes as you read
+  const timeOffset = t + progress * 4;
+
+  for (let level = 0; level < levels; level++) {
+    const threshold = -1.2 + level * step;
+    const isMajor = level % 3 === 0;
+    const isAccent = level % 5 === 0;
+
+    const alpha = isAccent && isMajor ? 0.25 : (isMajor ? 0.14 : 0.05);
+    const lw = isMajor ? 1.5 : 0.7;
+
+    ctx.strokeStyle = isAccent
+      ? `rgba(74,108,247,${alpha})`
+      : `rgba(42,69,144,${alpha})`;
+    ctx.lineWidth = lw;
+
+    // Horizontal contour scan
+    for (let py = 0; py < H; py += res) {
+      let drawing = false;
+      for (let px = 0; px < W; px += res) {
+        const v = noise(px, py, timeOffset);
+        const vr = noise(px + res, py, timeOffset);
+
+        if ((v < threshold && vr >= threshold) || (v >= threshold && vr < threshold)) {
+          if (!drawing) { ctx.beginPath(); ctx.moveTo(px, py); drawing = true; }
+          else { ctx.lineTo(px, py); }
+        }
+      }
+      if (drawing) ctx.stroke();
+    }
+
+    // Vertical contour scan
+    for (let px = 0; px < W; px += res) {
+      let drawing = false;
+      for (let py = 0; py < H; py += res) {
+        const v = noise(px, py, timeOffset);
+        const vd = noise(px, py + res, timeOffset);
+
+        if ((v < threshold && vd >= threshold) || (v >= threshold && vd < threshold)) {
+          if (!drawing) { ctx.beginPath(); ctx.moveTo(px, py); drawing = true; }
+          else { ctx.lineTo(px, py); }
+        }
+      }
+      if (drawing) ctx.stroke();
+    }
+  }
+
+  requestAnimationFrame(draw);
+}
+draw();
+
+// ─── REVEAL ON SCROLL ───
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
