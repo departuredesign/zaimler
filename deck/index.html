@@ -107,9 +107,35 @@ body{font-family:'Instrument Serif',serif;background:var(--bg);color:var(--fg);o
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:900px){
+  :root{--gutter:1.5rem}
   .split,.compare,.cards--3,.cards--4{grid-template-columns:1fr}
   .nav__links{display:none}
   .compare__col--left{border-right:none;border-bottom:1px solid var(--rule)}
+  .headline--xl{font-size:clamp(2.25rem,10vw,3.5rem);line-height:1.0}
+  .headline--lg{font-size:clamp(1.75rem,7vw,2.5rem);line-height:1.05}
+  .headline--md{font-size:clamp(1.5rem,5vw,2rem);line-height:1.1}
+  .stat--giant{font-size:clamp(4rem,18vw,6rem)}
+  .section--full{min-height:auto;padding-top:clamp(5rem,15vw,8rem);padding-bottom:clamp(5rem,15vw,8rem)}
+  .sub{font-size:1rem;max-width:100%}
+  .card__stat{font-size:2rem}
+  .card__title{font-size:1.1rem}
+  .card__desc{font-size:0.95rem}
+  .stack{max-width:100%}
+  .compare__col{padding:1.5rem}
+}
+
+@media(max-width:480px){
+  :root{--gutter:1.25rem}
+  .headline--xl{font-size:2rem;line-height:1.05}
+  .headline--lg{font-size:1.6rem;line-height:1.1}
+  .headline--md{font-size:1.35rem;line-height:1.15}
+  .stat--giant{font-size:3.5rem}
+  .nav{padding:1rem var(--gutter)}
+  .nav__logo{font-size:1rem}
+  .label{font-size:0.7rem}
+  .cards--4{gap:1px}
+  .card{padding:1.25rem}
+  .card__stat{font-size:1.75rem}
 }
 </style>
 </head>
@@ -141,16 +167,16 @@ body{font-family:'Instrument Serif',serif;background:var(--bg);color:var(--fg);o
   <div class="label reveal">The Big Shift</div>
   <h2 class="headline headline--lg reveal reveal-delay-1">Every industry is getting reshaped by AI.<br><em>The winners won't be those with the best model.</em></h2>
   <p class="sub reveal reveal-delay-2" style="margin-top:2rem">The question isn't which model you use. It's whether your AI understands your business.</p>
-  <div class="split reveal reveal-delay-3" style="margin-top:clamp(3rem,5vw,5rem);max-width:800px">
-    <div style="padding:1.5rem;border:1px solid var(--red);border-radius:8px;text-align:center">
-      <div style="font-size:1.25rem;font-weight:700;color:var(--red);margin-bottom:0.5rem">AI Models</div>
-      <div style="font-size:1rem;color:var(--muted)">Commoditizing</div>
-      <div style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem">GPT · Claude · Gemini · Llama</div>
+  <div class="split reveal reveal-delay-3" style="margin-top:clamp(3rem,5vw,5rem);max-width:900px">
+    <div style="padding:2rem 2.5rem;border:1px solid var(--red);border-radius:10px;text-align:center;background:rgba(0,0,0,0.3)">
+      <div style="font-family:'Inter Tight',sans-serif;font-size:1.5rem;font-weight:700;color:var(--red);margin-bottom:0.5rem">AI Models</div>
+      <div style="font-family:'Inter Tight',sans-serif;font-size:1.1rem;color:var(--muted)">Commoditizing</div>
+      <div style="font-size:1rem;color:var(--muted);margin-top:0.75rem">GPT · Claude · Gemini · Llama</div>
     </div>
-    <div style="padding:1.5rem;border:1px solid var(--accent);border-radius:8px;text-align:center">
-      <div style="font-size:1.25rem;font-weight:700;color:var(--accent);margin-bottom:0.5rem">Domain Intelligence</div>
-      <div style="font-size:1rem;color:var(--fg)">The New Moat</div>
-      <div style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem">Your proprietary data activated</div>
+    <div style="padding:2rem 2.5rem;border:1px solid var(--accent);border-radius:10px;text-align:center;background:rgba(0,0,0,0.3)">
+      <div style="font-family:'Inter Tight',sans-serif;font-size:1.5rem;font-weight:700;color:var(--accent);margin-bottom:0.5rem">Domain Intelligence</div>
+      <div style="font-family:'Inter Tight',sans-serif;font-size:1.1rem;color:var(--fg)">The New Moat</div>
+      <div style="font-size:1rem;color:var(--muted);margin-top:0.75rem">Your proprietary data activated</div>
     </div>
   </div>
 </section>
@@ -252,19 +278,19 @@ body{font-family:'Instrument Serif',serif;background:var(--bg);color:var(--fg);o
     <div class="card">
       <div class="card__num">01</div>
       <div class="card__title">Connect</div>
-      <div style="font-weight:600;font-size:0.9rem;margin-bottom:0.5rem">Unify all enterprise data sources</div>
+      <div style="font-family:'Inter Tight',sans-serif;font-weight:600;font-size:1.05rem;margin-bottom:0.6rem">Unify all enterprise data sources</div>
       <div class="card__desc">Structured, unstructured, cloud, enterprise apps</div>
     </div>
     <div class="card">
       <div class="card__num">02</div>
       <div class="card__title">Understand</div>
-      <div style="font-weight:600;font-size:0.9rem;margin-bottom:0.5rem">Build domain-specific semantic models</div>
+      <div style="font-family:'Inter Tight',sans-serif;font-weight:600;font-size:1.05rem;margin-bottom:0.6rem">Build domain-specific semantic models</div>
       <div class="card__desc">Auto-infer ontologies, taxonomies, relationships</div>
     </div>
     <div class="card">
       <div class="card__num">03</div>
       <div class="card__title">Activate</div>
-      <div style="font-weight:600;font-size:0.9rem;margin-bottom:0.5rem">Power AI agents with vetted domain context</div>
+      <div style="font-family:'Inter Tight',sans-serif;font-weight:600;font-size:1.05rem;margin-bottom:0.6rem">Power AI agents with vetted domain context</div>
       <div class="card__desc">Domain context + skills.md → intelligent automation</div>
     </div>
   </div>
@@ -279,26 +305,26 @@ body{font-family:'Instrument Serif',serif;background:var(--bg);color:var(--fg);o
   <div class="cards cards--4 reveal reveal-delay-2">
     <div class="card" style="text-align:center">
       <div class="card__stat red">40-60%</div>
-      <div style="font-size:0.95rem;color:var(--muted);margin:0.75rem 0">reduction in claims cycle time</div>
-      <div style="font-size:0.85rem;font-weight:600;color:var(--accent)">Insurance</div>
+      <div style="font-size:1.05rem;color:var(--muted);margin:0.75rem 0">reduction in claims cycle time</div>
+      <div style="font-family:'Instrument Sans',sans-serif;font-size:0.95rem;font-weight:600;color:var(--accent)">Insurance</div>
     </div>
     <div class="card" style="text-align:center">
       <div class="card__stat green">3×</div>
-      <div style="font-size:0.95rem;color:var(--muted);margin:0.75rem 0">faster booking with governed data</div>
-      <div style="font-size:0.85rem;font-weight:600;color:var(--accent)">Travel</div>
+      <div style="font-size:1.05rem;color:var(--muted);margin:0.75rem 0">faster booking with governed data</div>
+      <div style="font-family:'Instrument Sans',sans-serif;font-size:0.95rem;font-weight:600;color:var(--accent)">Travel</div>
     </div>
     <div class="card" style="text-align:center">
       <div class="card__stat blue">80%</div>
-      <div style="font-size:0.95rem;color:var(--muted);margin:0.75rem 0">less time on data reconciliation</div>
-      <div style="font-size:0.85rem;font-weight:600;color:var(--accent)">Asset Mgmt</div>
+      <div style="font-size:1.05rem;color:var(--muted);margin:0.75rem 0">less time on data reconciliation</div>
+      <div style="font-family:'Instrument Sans',sans-serif;font-size:0.95rem;font-weight:600;color:var(--accent)">Asset Mgmt</div>
     </div>
     <div class="card" style="text-align:center">
       <div class="card__stat yellow">50%</div>
-      <div style="font-size:0.95rem;color:var(--muted);margin:0.75rem 0">reduction in false-positive alerts</div>
-      <div style="font-size:0.85rem;font-weight:600;color:var(--accent)">Financial Services</div>
+      <div style="font-size:1.05rem;color:var(--muted);margin:0.75rem 0">reduction in false-positive alerts</div>
+      <div style="font-family:'Instrument Sans',sans-serif;font-size:0.95rem;font-weight:600;color:var(--accent)">Financial Services</div>
     </div>
   </div>
-  <p class="sub reveal" style="margin-top:2rem;font-size:0.8rem">Each cycle compounds value. More data → richer models → smarter agents.</p>
+  <p class="sub reveal" style="margin-top:2rem">Each cycle compounds value. More data → richer models → smarter agents.</p>
 </section>
 
 <div class="divider"></div>
